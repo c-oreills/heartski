@@ -1,6 +1,7 @@
 import os
 import json
 
+import gevent
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 
@@ -70,11 +71,19 @@ def ski_ws_handler(ws):
                 except ValueError:
                     print 'Not valid JSON:', m
                 if isinstance(m, dict) and 'type' in m:
-                    route_typed_message(m)
-                Player.send_all({'gehan_state': 'bellend', 'received': m})
+                    route_typed_message(player, m)
+                else:
+                    Player.send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         if player:
             cleanup_player(player)
+
+def server_tick():
+    while True:
+        Player.send_all({'type': 'serverTick',
+            'locations': get_all_player_locations(),
+            })
+        gevent.sleep(0.1)
 
 def dispatch(environ, start_response):
     """Resolves to the web page or the websocket depending on the path."""
@@ -91,6 +100,7 @@ def dispatch(environ, start_response):
     return open(html_path).read()
 
 if __name__ == '__main__':
+    gevent.spawn(server_tick)
     server = pywsgi.WSGIServer(("", PORT), dispatch,
         handler_class=WebSocketHandler)
     server.serve_forever()
