@@ -11,13 +11,7 @@
 
   PlayScreen = me.ScreenObject.extend({
     onResetEvent: function() {
-      var cake;
-      me.levelDirector.loadLevel('area01');
-      cake = new CakePit(10, 10, base);
-      me.game.add(cake, 1000);
-      me.game.sort();
-      window.cake = cake;
-      return console.log('tried to move');
+      return me.levelDirector.loadLevel('area01');
     },
     update: function() {},
     draw: function() {},
