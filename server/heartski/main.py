@@ -5,44 +5,10 @@ import gevent
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 
-class Player(object):
-    def __init__(self, ws):
-        self.ws = ws
-        self.x = 0
-        self.y = 0
+from players import Player, get_all_player_locations
 
-    @property
-    def id(self):
-        return id(self.ws)
-
-    def send(self, m):
-        if isinstance(m, unicode):
-            self.ws.send(m)
-        elif isinstance(m, dict):
-            self.ws.send(json.dumps(m))
-
-    @classmethod
-    def send_all(cls, data):
-        for p in players:
-            p.send(data)
-
-players = set()
 PORT = 8000
 
-def get_all_player_locations():
-    return {p.id: (p.x, p.y) for p in players}
-
-def init_player(ws):
-    player = Player(ws)
-    players.add(player)
-    init_data = {'type': 'initialData',
-            'locations': get_all_player_locations(),
-            'myId': player.id}
-    player.send(init_data)
-    return player
-
-def cleanup_player(player):
-    players.remove(player)
 
 def update_player_position(player, m):
     player.x = m['left']
@@ -62,7 +28,7 @@ def route_typed_message(player, m):
 def ski_ws_handler(ws):
     player = None
     try:
-        player = init_player(ws)
+        player = Player._init(ws)
         while True:
             m = ws.receive()
             if m:
@@ -76,7 +42,7 @@ def ski_ws_handler(ws):
                     Player.send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         if player:
-            cleanup_player(player)
+            Player._cleanup(player)
 
 def server_tick():
     while True:
