@@ -44,13 +44,13 @@
     },
     playerMoved: function(player) {
       var coords;
-      coords = JSON.encode({
+      coords = {
         type: 'playerPosition',
         left: player.left,
         top: player.top,
         bottom: player.bottom,
         right: player.right
-      });
+      };
       return this.send(coords);
     }
   });
