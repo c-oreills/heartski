@@ -18,13 +18,15 @@ def ski_ws_handler(ws):
 def dispatch(environ, start_response):
     """Resolves to the web page or the websocket depending on the path."""
     path = environ['PATH_INFO']
-    if path == '/ski':
+    if path == '/ski_ws':
         return ski_ws_handler(environ["wsgi.websocket"])
     if path.startswith('/'):
         path = path[1:]
     path = path or 'index.html'
     start_response('200 OK', [('content-type', 'text/html')])
-    html_path = os.path.join(os.path.dirname(__file__), '../../www', path)
+    www_path = os.path.join(os.path.dirname(__file__), '../../www')
+    html_path = os.path.join(www_path, path)
+    assert html_path.startswith(www_path), 'Security breach!'
     return open(html_path).read()
 
 if __name__ == '__main__':
