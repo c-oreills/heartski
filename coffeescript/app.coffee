@@ -1,5 +1,6 @@
-`define(['require', './PlayScreen', './Player', 'domReady!'],
-function(require, PlayScreen, Player) {`
+`define(['require', './PlayScreen', './Player', './CakePit',
+'domReady!'],
+function(require, PlayScreen, Player, CakePit) {`
 
 resources = [
     name: "area01_level_tiles",
@@ -13,6 +14,14 @@ resources = [
     name: "gripe_run_right",
     type: "image",
     src: "media/images/gripe_run_right.png"
+,
+    name: "spinning_coin_gold",
+    type: "image",
+    src: "media/images/spinning_coin_gold.png"
+,
+    name: "wheelie_right",
+    type: "image",
+    src: "media/images/wheelie_right.png"
 ,
     name: "area01",
     type: "tmx",
@@ -29,6 +38,7 @@ me.loader.onload = ->
     me.state.set me.state.PLAY, screen
 
     me.entityPool.add "mainPlayer", Player
+    me.entityPool.add "cakePit", CakePit
 
     # enable the keyboard
     me.input.bindKey me.input.KEY.LEFT,  "left"
