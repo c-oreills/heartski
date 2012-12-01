@@ -2,7 +2,7 @@
   define(['require', './PlayScreen', './Player', 'domReady!'],
 function(require, PlayScreen, Player) {;
 
-  var resources, socket;
+  var resources;
 
   resources = [
     {
@@ -42,12 +42,18 @@ function(require, PlayScreen, Player) {;
   me.loader.preload(resources);
 
   try {
-    socket = new WebSocket("ws:///ski_ws");
+    window.socket = new WebSocket("ws://" + document.location.host + "/ski_ws");
     socket.onopen = function() {
       return socket.send('New participant joined');
     };
     socket.onmessage = function(e) {
       return console.log(e.data);
+    };
+    socket.onerror = function(e) {
+      return console.log('error', e.data);
+    };
+    socket.onclose = function(e) {
+      return console.log('closed', e);
     };
   } catch (err) {
     console.log(err);

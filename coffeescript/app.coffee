@@ -39,11 +39,15 @@ me.loader.onload = ->
 me.loader.preload resources
 
 try
-    socket = new WebSocket("ws:///ski_ws")
+    window.socket = new WebSocket("ws://#{document.location.host}/ski_ws")
     socket.onopen = ->
         socket.send 'New participant joined'
     socket.onmessage = (e)->
         console.log e.data
+    socket.onerror = (e)->
+        console.log 'error', e.data
+    socket.onclose = (e)->
+        console.log 'closed', e
 
 catch err
     console.log err
