@@ -1,0 +1,7 @@
+@import "compass/css3";
+body {
+    font-family: arial;
+}
+.game {
+    @include border-radius(5px);
+}
