@@ -18,6 +18,10 @@ Player = me.ObjectEntity.extend
             @vel.x += @accel.x * me.timer.tick
         else
             @vel.x = 0
+        if me.input.isKeyPressed 'up'
+            @vel.y -= @accel.y * me.timer.tick
+        else if me.input.isKeyPressed 'down'
+            @vel.y += @accel.y * me.timer.tick
 
         if me.input.isKeyPressed 'jump'
             if not @jumping and not @falling
