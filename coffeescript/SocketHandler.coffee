@@ -34,8 +34,7 @@ SocketHandler = new Class
             bottom: player.bottom
             right: player.right
         }
-        console.log 'move ', coords
-        @socket.send coords
+        @send coords
 
 return SocketHandler
 `})`

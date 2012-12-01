@@ -44,8 +44,7 @@
         bottom: player.bottom,
         right: player.right
       });
-      console.log('move ', coords);
-      return this.socket.send(coords);
+      return this.send(coords);
     }
   });
 
