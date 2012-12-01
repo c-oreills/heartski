@@ -11,10 +11,10 @@ Player = me.ObjectEntity.extend
 
     update: ->
         if me.input.isKeyPressed 'left'
-            @flipX true
+            @flipX false
             @vel.x -= @accel.x * me.timer.tick
         else if me.input.isKeyPressed 'right'
-            @flipX false
+            @flipX true
             @vel.x += @accel.x * me.timer.tick
         else
             @vel.x = 0

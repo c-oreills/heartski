@@ -13,10 +13,10 @@
     },
     update: function() {
       if (me.input.isKeyPressed('left')) {
-        this.flipX(true);
+        this.flipX(false);
         this.vel.x -= this.accel.x * me.timer.tick;
       } else if (me.input.isKeyPressed('right')) {
-        this.flipX(false);
+        this.flipX(true);
         this.vel.x += this.accel.x * me.timer.tick;
       } else {
         this.vel.x = 0;
