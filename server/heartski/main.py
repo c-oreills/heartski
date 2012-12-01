@@ -1,17 +1,22 @@
 import os
+import json
+
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 
 players = set()
 PORT = 8000
 
+def send_all(data):
+    for p in players:
+        p.send(json.dumps(data))
+
 def ski_ws_handler(ws):
     try:
         players.add(ws)
         while True:
             m = ws.receive()
-            for p in players:
-                p.send(m)
+            send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         players.remove(ws)
 
