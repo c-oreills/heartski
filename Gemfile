@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+gem "sass", "~>3.2.3"
+gem "compass", "~>0.12.2"
+gem "oily_png", "~>1.0.2"
+gem "jasmine", "~>1.3.0"
+gem "rake", "~>10.0.2"
+gem "guard", "~>1.5.4"
+gem "guard-coffeescript", "~>1.2.1"
+gem "coffee-script-source", "~>1.3.3"
+gem "guard-compass", "~>0.0.6"
+gem "json", "~>1.7.5"
+gem "guard-jasmine", "~>1.10.1"
+gem "rb-inotify", "~>0.8.8"
