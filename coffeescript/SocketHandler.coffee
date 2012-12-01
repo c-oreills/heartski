@@ -33,13 +33,12 @@ SocketHandler = new Class
         console.log 'sent ', obj
 
     playerMoved: (player) ->
-        coords = JSON.encode {
+        coords =
             type: 'playerPosition'
             left: player.left
             top: player.top
             bottom: player.bottom
             right: player.right
-        }
         @send coords
 
 return SocketHandler
