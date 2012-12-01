@@ -61,8 +61,8 @@ def dispatch(environ, start_response):
         path = path[1:]
     path = path or 'index.html'
     start_response('200 OK', [('content-type', 'text/html')])
-    www_path = os.path.join(os.path.dirname(__file__), '../../www')
-    html_path = os.path.join(www_path, path)
+    www_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../www'))
+    html_path = os.path.abspath(os.path.join(www_path, path))
     assert html_path.startswith(www_path), 'Security breach!'
     return open(html_path).read()
 
