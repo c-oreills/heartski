@@ -19,10 +19,6 @@ resources = [
     src: "media/map.tmx"
 ]
 
-
-socket = new WebSocket "ws:///ski_ws"
-socket.send 'christy is lame'
-
 # Init screen
 me.video.init 'appSpace', 640, 480, false, 1.0
 me.state.change me.state.LOADING
@@ -42,4 +38,13 @@ me.loader.onload = ->
 
 me.loader.preload resources
 
+try
+    socket = new WebSocket("ws:///ski_ws")
+    socket.onopen = ->
+        socket.send 'New participant joined'
+    socket.onmessage = (e)->
+        console.log e.data
+
+catch err
+    console.log err
 `})`

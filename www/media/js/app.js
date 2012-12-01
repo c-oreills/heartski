@@ -24,10 +24,6 @@ function(require, PlayScreen, Player) {;
     }
   ];
 
-  socket = new WebSocket("ws:///ski_ws");
-
-  socket.send('christy is lame');
-
   me.video.init('appSpace', 640, 480, false, 1.0);
 
   me.state.change(me.state.LOADING);
@@ -44,6 +40,18 @@ function(require, PlayScreen, Player) {;
   };
 
   me.loader.preload(resources);
+
+  try {
+    socket = new WebSocket("ws:///ski_ws");
+    socket.onopen = function() {
+      return socket.send('New participant joined');
+    };
+    socket.onmessage = function(e) {
+      return console.log(e.data);
+    };
+  } catch (err) {
+    console.log(err);
+  }
 
   });
 
