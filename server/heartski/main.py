@@ -4,6 +4,7 @@ import json
 import gevent
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
+from geventwebsocket.exceptions import WebSocketError
 
 from players import Player, get_all_player_locations
 
@@ -14,8 +15,11 @@ def update_player_position(player, m):
     player.x = m['left']
     player.y = m['top']
 
+noop = lambda *a, **k: None
+
 typed_message_fns = {
-        'playerPosition': update_player_position}
+        'playerPosition': update_player_position,
+        'playerJoined': noop}
 
 def route_typed_message(player, m):
     type_ = m['type']
@@ -46,15 +50,20 @@ def ski_ws_handler(ws):
 
 def server_tick():
     while True:
-        Player.send_all({'type': 'serverTick',
-            'locations': get_all_player_locations(),
-            })
-        gevent.sleep(0.1)
+        try:
+            Player.send_all({'type': 'serverTick',
+                'locations': get_all_player_locations(),
+                })
+            gevent.sleep(0.1)
+        except WebSocketError:
+            pass
 
 def dispatch(environ, start_response):
     """Resolves to the web page or the websocket depending on the path."""
     path = environ['PATH_INFO']
     if path == '/ski_ws':
+        if 'wsgi.websocket' not in environ:
+            print environ
         return ski_ws_handler(environ["wsgi.websocket"])
     if path.startswith('/'):
         path = path[1:]
