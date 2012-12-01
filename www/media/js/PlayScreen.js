@@ -11,10 +11,7 @@
 
   PlayScreen = me.ScreenObject.extend({
     onResetEvent: function() {
-      var cake;
-      me.levelDirector.loadLevel('area01');
-      cake = new CakePit(100, 100, base);
-      return me.game.add(cake, 1000);
+      return me.levelDirector.loadLevel('area01');
     },
     update: function() {},
     draw: function() {},

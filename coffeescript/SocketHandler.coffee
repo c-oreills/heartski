@@ -25,7 +25,7 @@ SocketHandler = new Class
 
     receive: (event) ->
         obj = JSON.decode(event.data)
-        console.log 'received ', obj
+        #console.log 'received ', obj
         if obj.type == 'serverTick'
             @fireEvent 'playersMoved', [obj.locations]
 

@@ -16,26 +16,33 @@ cls = new Class
         @myPlayerId = id
 
     playersMoved: (locations) ->
-        console.log 'interpret positions', locations
+        #console.log 'interpret positions', locations
         Object.each  locations, (coords, playerId) =>
-            if playerId isnt @myPlayerId
+            if Number(playerId) != Number(@myPlayerId)
                 @movePlayer playerId, coords
 
     movePlayer: (playerId, coords) ->
-        playerObj = @getPlayerOrRegister(playerId)
+        console.log 'move player ', playerId, 'to ', coords
+        playerObj = @getPlayerOrRegister(playerId, coords)
+        playerObj.set coords, playerObj.width, playerObj.height
+        me.game.sort()
 
-
-    getPlayerOrRegister: (playerId) ->
-        if not @players[playerId]?
-            player = @createPlayer()
-            @players[playerId] = player
+    getPlayerOrRegister: (playerId, coords) ->
+        player = @players[playerId]
+        if not player?
+            player = @insertPlayer playerId, coords
         player
 
-    createPlayer: ->
-        console.log 'create player'
-        cake = new CakePit(10, 10, base)
-        me.game.add(cake, 1000)
+    insertPlayer: (playerId, coords) ->
+        console.log 'insert player to ', coords
+        player = @createPlayer coords
+        @players[playerId] = player
+
+    createPlayer: (coords) ->
+        cake = new CakePit(coords[0], coords[1], base)
+        me.game.add(cake, 1005)
         me.game.sort()
+        cake
 
 return cls
 `})`

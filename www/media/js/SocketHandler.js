@@ -34,7 +34,6 @@
     receive: function(event) {
       var obj;
       obj = JSON.decode(event.data);
-      console.log('received ', obj);
       if (obj.type === 'serverTick') {
         return this.fireEvent('playersMoved', [obj.locations]);
       } else if (obj.type === 'initialData') {

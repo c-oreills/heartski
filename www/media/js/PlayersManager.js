@@ -19,31 +19,39 @@
     },
     playersMoved: function(locations) {
       var _this = this;
-      console.log('interpret positions', locations);
       return Object.each(locations, function(coords, playerId) {
-        if (playerId !== _this.myPlayerId) {
+        if (Number(playerId) !== Number(_this.myPlayerId)) {
           return _this.movePlayer(playerId, coords);
         }
       });
     },
     movePlayer: function(playerId, coords) {
       var playerObj;
-      return playerObj = this.getPlayerOrRegister(playerId);
+      console.log('move player ', playerId, 'to ', coords);
+      playerObj = this.getPlayerOrRegister(playerId, coords);
+      playerObj.set(coords, playerObj.width, playerObj.height);
+      return me.game.sort();
     },
-    getPlayerOrRegister: function(playerId) {
+    getPlayerOrRegister: function(playerId, coords) {
       var player;
-      if (!(this.players[playerId] != null)) {
-        player = this.createPlayer();
-        this.players[playerId] = player;
+      player = this.players[playerId];
+      if (!(player != null)) {
+        player = this.insertPlayer(playerId, coords);
       }
       return player;
     },
-    createPlayer: function() {
+    insertPlayer: function(playerId, coords) {
+      var player;
+      console.log('insert player to ', coords);
+      player = this.createPlayer(coords);
+      return this.players[playerId] = player;
+    },
+    createPlayer: function(coords) {
       var cake;
-      console.log('create player');
-      cake = new CakePit(10, 10, base);
-      me.game.add(cake, 1000);
-      return me.game.sort();
+      cake = new CakePit(coords[0], coords[1], base);
+      me.game.add(cake, 1005);
+      me.game.sort();
+      return cake;
     }
   });
 
