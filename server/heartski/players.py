@@ -23,7 +23,7 @@ class Player(object):
 
     @classmethod
     def send_all(cls, data):
-        for p in cls._players:
+        for p in list(cls._players):
             p.send(data)
 
     @classmethod
