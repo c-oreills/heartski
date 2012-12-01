@@ -24,7 +24,7 @@ cls = new Class
     movePlayer: (playerId, coords) ->
         console.log 'move player ', playerId, 'to ', coords
         playerObj = @getPlayerOrRegister(playerId, coords)
-        playerObj.set coords, playerObj.width, playerObj.height
+        playerObj.pos.set coords[0], coords[1]
         me.game.sort()
 
     getPlayerOrRegister: (playerId, coords) ->

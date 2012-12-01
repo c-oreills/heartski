@@ -43,7 +43,6 @@
     send: function(obj) {
       var encoded;
       encoded = JSON.encode(obj);
-      console.log('send ', encoded);
       return this.socket.send(encoded);
     },
     playerMoved: function(player) {

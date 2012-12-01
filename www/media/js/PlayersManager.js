@@ -29,7 +29,7 @@
       var playerObj;
       console.log('move player ', playerId, 'to ', coords);
       playerObj = this.getPlayerOrRegister(playerId, coords);
-      playerObj.set(coords, playerObj.width, playerObj.height);
+      playerObj.pos.set(coords[0], coords[1]);
       return me.game.sort();
     },
     getPlayerOrRegister: function(playerId, coords) {

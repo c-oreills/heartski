@@ -35,7 +35,7 @@ SocketHandler = new Class
 
     send: (obj) ->
         encoded = JSON.encode(obj)
-        console.log 'send ', encoded
+        #console.log 'send ', encoded
         @socket.send encoded
 
     playerMoved: (player) ->
