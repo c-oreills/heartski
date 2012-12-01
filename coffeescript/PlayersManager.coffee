@@ -22,9 +22,15 @@ cls = new Class
                 @movePlayer playerId, coords
 
     movePlayer: (playerId, coords) ->
-        console.log 'move player ', playerId, 'to ', coords
         playerObj = @getPlayerOrRegister(playerId, coords)
-        playerObj.pos.set coords[0], coords[1]
+        if playerObj.pos.x isnt coords[0] or playerObj.pos.y isnt coords[1]
+            console.log 'move player'
+            if coords[0] > playerObj.pos.x
+                playerObj.flipX true
+            else
+                playerObj.flipX false
+
+            playerObj.pos.set coords[0], coords[1]
         me.game.sort()
 
     getPlayerOrRegister: (playerId, coords) ->
@@ -34,7 +40,6 @@ cls = new Class
         player
 
     insertPlayer: (playerId, coords) ->
-        console.log 'insert player to ', coords
         player = @createPlayer coords
         @players[playerId] = player
 

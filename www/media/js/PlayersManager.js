@@ -27,9 +27,16 @@
     },
     movePlayer: function(playerId, coords) {
       var playerObj;
-      console.log('move player ', playerId, 'to ', coords);
       playerObj = this.getPlayerOrRegister(playerId, coords);
-      playerObj.pos.set(coords[0], coords[1]);
+      if (playerObj.pos.x !== coords[0] || playerObj.pos.y !== coords[1]) {
+        console.log('move player');
+        if (coords[0] > playerObj.pos.x) {
+          playerObj.flipX(true);
+        } else {
+          playerObj.flipX(false);
+        }
+        playerObj.pos.set(coords[0], coords[1]);
+      }
       return me.game.sort();
     },
     getPlayerOrRegister: function(playerId, coords) {
@@ -42,7 +49,6 @@
     },
     insertPlayer: function(playerId, coords) {
       var player;
-      console.log('insert player to ', coords);
       player = this.createPlayer(coords);
       return this.players[playerId] = player;
     },
