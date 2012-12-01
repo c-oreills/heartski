@@ -14,7 +14,8 @@
       console.log('connecting to ', tunnelURL);
       this.socket = new WebSocket(tunnelURL);
       this.socket.onopen = function() {
-        return this.send({
+        console.log('opened socket');
+        return _this.send({
           type: 'playerJoined'
         });
       };
@@ -39,8 +40,10 @@
       }
     },
     send: function(obj) {
-      this.socket.send(JSON.encode(obj));
-      return console.log('sent ', obj);
+      var encoded;
+      encoded = JSON.encode(obj);
+      console.log('send ', encoded);
+      return this.socket.send(encoded);
     },
     playerMoved: function(player) {
       var coords;

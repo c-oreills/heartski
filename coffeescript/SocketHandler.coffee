@@ -9,7 +9,8 @@ SocketHandler = new Class
         tunnelURL = "ws://#{@host}/ski_ws"
         console.log 'connecting to ', tunnelURL
         @socket = new WebSocket(tunnelURL)
-        @socket.onopen = ->
+        @socket.onopen = =>
+            console.log 'opened socket'
             @send type: 'playerJoined'
         @socket.onmessage = (e) =>
             @receive(e)
@@ -29,8 +30,9 @@ SocketHandler = new Class
             @fireEvent 'playersMoved', [obj.locations]
 
     send: (obj) ->
-        @socket.send JSON.encode(obj)
-        console.log 'sent ', obj
+        encoded = JSON.encode(obj)
+        console.log 'send ', encoded
+        @socket.send encoded
 
     playerMoved: (player) ->
         coords =
