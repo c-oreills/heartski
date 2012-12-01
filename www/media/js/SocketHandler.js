@@ -37,6 +37,8 @@
       console.log('received ', obj);
       if (obj.type === 'serverTick') {
         return this.fireEvent('playersMoved', [obj.locations]);
+      } else if (obj.type === 'initialData') {
+        return this.fireEvent('setPlayerId', [obj.myId]);
       }
     },
     send: function(obj) {

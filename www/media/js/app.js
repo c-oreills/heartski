@@ -56,8 +56,10 @@ PlayersManager) {;
     }
     return new SocketHandler(tunnelHost, {
       onPlayersMoved: function(locations) {
-        console.log('players moved sir!', locations);
         return playersManager.playersMoved(locations);
+      },
+      onSetPlayerId: function(playerId) {
+        return playersManager.setPlayerId(playerId);
       }
     });
   };

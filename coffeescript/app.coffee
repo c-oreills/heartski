@@ -56,8 +56,9 @@ me.loader.onload = ->
         tunnelHost = document.location.host
     new SocketHandler tunnelHost,
         onPlayersMoved: (locations) ->
-            console.log 'players moved sir!', locations
             playersManager.playersMoved locations
+        onSetPlayerId: (playerId) ->
+            playersManager.setPlayerId playerId
 
 me.loader.preload resources
 

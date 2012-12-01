@@ -29,6 +29,10 @@ SocketHandler = new Class
         if obj.type == 'serverTick'
             @fireEvent 'playersMoved', [obj.locations]
 
+        else if obj.type == 'initialData'
+            @fireEvent 'setPlayerId', [obj.myId]
+
+
     send: (obj) ->
         encoded = JSON.encode(obj)
         console.log 'send ', encoded
