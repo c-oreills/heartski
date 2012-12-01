@@ -54,7 +54,11 @@ function(require, PlayScreen, Player, CakePit, SocketHandler) {;
 
   tunnelHost = "http://" + tunnelCode + ".localtunnel.com";
 
-  new SocketHandler(tunnelHost);
+  new SocketHandler(tunnelHost, {
+    onPlayersMoved: function(locations) {
+      return console.log('players moved sir!', locations);
+    }
+  });
 
   });
 

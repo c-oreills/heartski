@@ -50,6 +50,8 @@ me.loader.preload resources
 
 tunnelCode = window.location.hash.substring 1
 tunnelHost = "http://#{tunnelCode}.localtunnel.com"
-new SocketHandler tunnelHost
+new SocketHandler tunnelHost,
+    onPlayersMoved: (locations) ->
+        console.log 'players moved sir!', locations
 
 `})`

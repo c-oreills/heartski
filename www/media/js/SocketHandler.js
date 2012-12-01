@@ -4,9 +4,11 @@
   var SocketHandler;
 
   SocketHandler = new Class({
-    initialize: function(host) {
+    Implements: [Options, Events],
+    initialize: function(host, options) {
       var _this = this;
       this.host = host;
+      this.setOptions(options);
       console.log('connecting to ', this.host);
       this.socket = new WebSocket("ws://" + this.host + "/ski_ws");
       this.socket.onopen = function() {
@@ -29,7 +31,10 @@
     receive: function(event) {
       var obj;
       obj = JSON.decode(event.data);
-      return console.log('received ', obj);
+      console.log('received ', obj);
+      if (obj.type === 'serverTick') {
+        return this.fireEvent('playersMoved', [obj.locations]);
+      }
     },
     send: function(obj) {
       this.socket.send(JSON.encode(obj));
