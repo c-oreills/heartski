@@ -20,12 +20,13 @@ class Player(object):
         elif isinstance(m, dict):
             self.ws.send(json.dumps(m))
 
+    @classmethod
+    def send_all(data):
+        for p in players:
+            p.send(data)
+
 players = set()
 PORT = 8000
-
-def send_all(data):
-    for p in players:
-        p.send(json.dumps(data))
 
 def get_all_player_locations():
     return {p.id: (p.x, p.y) for p in players}
@@ -46,8 +47,8 @@ def ski_ws_handler(ws):
     try:
         player = init_player(ws)
         while True:
-            m = ws.receive()
-            send_all({'gehan_state': 'bellend', 'received': m})
+            m = json.loads(ws.receive())
+            Player.send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         if player:
             cleanup_player(player)
