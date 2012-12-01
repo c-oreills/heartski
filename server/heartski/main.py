@@ -21,7 +21,7 @@ class Player(object):
             self.ws.send(json.dumps(m))
 
     @classmethod
-    def send_all(data):
+    def send_all(cls, data):
         for p in players:
             p.send(data)
 
@@ -34,21 +34,44 @@ def get_all_player_locations():
 def init_player(ws):
     player = Player(ws)
     players.add(player)
-    init_data = {'locations': get_all_player_locations()}
-    init_data.update({'my_id': player.id})
+    init_data = {'type': 'initialData',
+            'locations': get_all_player_locations(),
+            'myId': player.id}
     player.send(init_data)
     return player
 
 def cleanup_player(player):
     players.remove(player)
 
+def update_player_position(player, m):
+    player.x = m['left']
+    player.y = m['top']
+
+typed_message_fns = {
+        'playerPosition': update_player_position}
+
+def route_typed_message(player, m):
+    type_ = m['type']
+    message_fn = typed_message_fns.get(type_)
+    if not message_fn:
+        player.send({'error' 'No such message type: %s' % type_})
+        return
+    message_fn(player, m)
+
 def ski_ws_handler(ws):
     player = None
     try:
         player = init_player(ws)
         while True:
-            m = json.loads(ws.receive())
-            Player.send_all({'gehan_state': 'bellend', 'received': m})
+            m = ws.receive()
+            if m:
+                try:
+                    m = json.loads(m)
+                except ValueError:
+                    print 'Not valid JSON:', m
+                if isinstance(m, dict) and 'type' in m:
+                    route_typed_message(m)
+                Player.send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         if player:
             cleanup_player(player)
