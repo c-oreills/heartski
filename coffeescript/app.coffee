@@ -1,6 +1,6 @@
 `define(['require', './PlayScreen', './Player', './CakePit',
-'domReady!'],
-function(require, PlayScreen, Player, CakePit) {`
+'./SocketHandler', 'domReady!'],
+function(require, PlayScreen, Player, CakePit, SocketHandler) {`
 
 resources = [
     name: "area01_level_tiles",
@@ -48,17 +48,8 @@ me.loader.onload = ->
 
 me.loader.preload resources
 
-try
-    window.socket = new WebSocket("ws://#{document.location.host}/ski_ws")
-    socket.onopen = ->
-        socket.send 'New participant joined'
-    socket.onmessage = (e)->
-        console.log e.data
-    socket.onerror = (e)->
-        console.log 'error', e.data
-    socket.onclose = (e)->
-        console.log 'closed', e
+tunnelCode = window.location.hash.substring 1
+tunnelHost = "http://#{tunnelCode}.localtunnel.com"
+new SocketHandler tunnelHost
 
-catch err
-    console.log err
 `})`
