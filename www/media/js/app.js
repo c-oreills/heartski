@@ -1,9 +1,9 @@
 (function() {
   define(['require', './PlayScreen', './Player', './CakePit',
-'domReady!'],
-function(require, PlayScreen, Player, CakePit) {;
+'./SocketHandler', 'domReady!'],
+function(require, PlayScreen, Player, CakePit, SocketHandler) {;
 
-  var resources;
+  var resources, tunnelCode, tunnelHost;
 
   resources = [
     {
@@ -50,23 +50,11 @@ function(require, PlayScreen, Player, CakePit) {;
 
   me.loader.preload(resources);
 
-  try {
-    window.socket = new WebSocket("ws://" + document.location.host + "/ski_ws");
-    socket.onopen = function() {
-      return socket.send('New participant joined');
-    };
-    socket.onmessage = function(e) {
-      return console.log(e.data);
-    };
-    socket.onerror = function(e) {
-      return console.log('error', e.data);
-    };
-    socket.onclose = function(e) {
-      return console.log('closed', e);
-    };
-  } catch (err) {
-    console.log(err);
-  }
+  tunnelCode = window.location.hash.substring(1);
+
+  tunnelHost = "http://" + tunnelCode + ".localtunnel.com";
+
+  new SocketHandler(tunnelHost);
 
   });
 
