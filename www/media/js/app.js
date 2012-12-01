@@ -1,9 +1,10 @@
 (function() {
   define(['require', './PlayScreen', './Player', './CakePit',
-'./SocketHandler', 'domReady!'],
-function(require, PlayScreen, Player, CakePit, SocketHandler) {;
+'./SocketHandler', './PlayersManager', 'domReady!'],
+function(require, PlayScreen, Player, CakePit, SocketHandler,
+PlayersManager) {;
 
-  var resources, tunnelCode, tunnelHost;
+  var resources;
 
   resources = [
     {
@@ -38,31 +39,30 @@ function(require, PlayScreen, Player, CakePit, SocketHandler) {;
   me.state.change(me.state.LOADING);
 
   me.loader.onload = function() {
-    var screen;
+    var playersManager, screen, tunnelCode, tunnelHost;
     console.log('loaded sir');
     screen = new PlayScreen(true);
     me.state.set(me.state.PLAY, screen);
     me.entityPool.add("mainPlayer", Player);
     me.input.bindKey(me.input.KEY.LEFT, "left");
     me.input.bindKey(me.input.KEY.RIGHT, "right");
-    return me.state.change(me.state.PLAY);
+    me.state.change(me.state.PLAY);
+    playersManager = new PlayersManager();
+    tunnelCode = window.location.hash.substring(1);
+    if (tunnelCode) {
+      tunnelHost = "" + tunnelCode + ".localtunnel.com";
+    } else {
+      tunnelHost = document.location.host;
+    }
+    return new SocketHandler(tunnelHost, {
+      onPlayersMoved: function(locations) {
+        console.log('players moved sir!', locations);
+        return playersManager.playersMoved(locations);
+      }
+    });
   };
 
   me.loader.preload(resources);
-
-  tunnelCode = window.location.hash.substring(1);
-
-  if (tunnelCode) {
-    tunnelHost = "" + tunnelCode + ".localtunnel.com";
-  } else {
-    tunnelHost = document.location.host;
-  }
-
-  new SocketHandler(tunnelHost, {
-    onPlayersMoved: function(locations) {
-      return console.log('players moved sir!', locations);
-    }
-  });
 
   });
 

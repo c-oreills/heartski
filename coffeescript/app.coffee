@@ -1,6 +1,7 @@
 `define(['require', './PlayScreen', './Player', './CakePit',
-'./SocketHandler', 'domReady!'],
-function(require, PlayScreen, Player, CakePit, SocketHandler) {`
+'./SocketHandler', './PlayersManager', 'domReady!'],
+function(require, PlayScreen, Player, CakePit, SocketHandler,
+PlayersManager) {`
 
 resources = [
     name: "area01_level_tiles",
@@ -46,15 +47,18 @@ me.loader.onload = ->
 
     me.state.change me.state.PLAY
 
-me.loader.preload resources
+    playersManager = new PlayersManager()
 
-tunnelCode = window.location.hash.substring 1
-if tunnelCode
-    tunnelHost = "#{tunnelCode}.localtunnel.com"
-else
-    tunnelHost = document.location.host
-new SocketHandler tunnelHost,
-    onPlayersMoved: (locations) ->
-        console.log 'players moved sir!', locations
+    tunnelCode = window.location.hash.substring 1
+    if tunnelCode
+        tunnelHost = "#{tunnelCode}.localtunnel.com"
+    else
+        tunnelHost = document.location.host
+    new SocketHandler tunnelHost,
+        onPlayersMoved: (locations) ->
+            console.log 'players moved sir!', locations
+            playersManager.playersMoved locations
+
+me.loader.preload resources
 
 `})`
