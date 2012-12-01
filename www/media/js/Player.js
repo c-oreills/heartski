@@ -6,6 +6,8 @@
   Player = me.ObjectEntity.extend({
     init: function(x, y, settings) {
       this.parent(x, y, settings);
+      settings.image = 'gripe_run_right';
+      settings.spritewidth = 64;
       this.setVelocity(3, 15);
       return me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     },
@@ -18,6 +20,12 @@
         this.vel.x += this.accel.x * me.timer.tick;
       } else {
         this.vel.x = 0;
+      }
+      if (me.input.isKeyPressed('jump')) {
+        if (!this.jumping && !this.falling) {
+          this.vel.y = -this.maxVel.y * me.timer.tick;
+          this.jumping = true;
+        }
       }
       this.updateMovement();
       if (this.vel.x !== 0 || this.vel.y !== 0) {

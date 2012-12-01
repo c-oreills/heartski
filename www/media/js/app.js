@@ -46,6 +46,7 @@ PlayersManager) {;
     me.entityPool.add("mainPlayer", Player);
     me.input.bindKey(me.input.KEY.LEFT, "left");
     me.input.bindKey(me.input.KEY.RIGHT, "right");
+    me.input.bindKey(me.input.KEY.SPACE, "jump", true);
     me.state.change(me.state.PLAY);
     playersManager = new PlayersManager();
     tunnelCode = window.location.hash.substring(1);

@@ -3,7 +3,8 @@
 Player = me.ObjectEntity.extend
     init: (x, y, settings) ->
         @parent x, y, settings
-
+        settings.image = 'gripe_run_right'
+        settings.spritewidth = 64
         @setVelocity 3, 15
 
         me.game.viewport.follow @pos, me.game.viewport.AXIS.BOTH
@@ -17,6 +18,11 @@ Player = me.ObjectEntity.extend
             @vel.x += @accel.x * me.timer.tick
         else
             @vel.x = 0
+
+        if me.input.isKeyPressed 'jump'
+            if not @jumping and not @falling
+                @vel.y = -@maxVel.y * me.timer.tick
+                @jumping = true
 
         @updateMovement()
 
