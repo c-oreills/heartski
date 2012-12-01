@@ -21,6 +21,14 @@ Player = me.ObjectEntity.extend
         @updateMovement()
 
         if @vel.x isnt 0 or @vel.y isnt 0
+            coords = JSON.encode {
+                type: 'playerPosition'
+                left: @left
+                top: @top
+                bottom: @bottom
+                right: @right
+            }
+            socket.send coords
             @parent this
             return true
 

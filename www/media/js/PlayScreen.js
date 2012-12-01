@@ -17,16 +17,7 @@
       return me.game.add(cake, 1000);
     },
     update: function() {},
-    draw: function() {
-      var cake;
-      counter += 1;
-      if (counter % 20 === 0) {
-        console.log('draw ', counter);
-        cake = new CakePit(counter * 10, 100, base);
-        me.game.add(cake, 1000);
-        return me.game.sort();
-      }
-    },
+    draw: function() {},
     onDestroyEvent: function() {}
   });
 

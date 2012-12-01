@@ -10,6 +10,7 @@
       return me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     },
     update: function() {
+      var coords;
       if (me.input.isKeyPressed('left')) {
         this.flipX(true);
         this.vel.x -= this.accel.x * me.timer.tick;
@@ -21,6 +22,14 @@
       }
       this.updateMovement();
       if (this.vel.x !== 0 || this.vel.y !== 0) {
+        coords = JSON.encode({
+          type: 'playerPosition',
+          left: this.left,
+          top: this.top,
+          bottom: this.bottom,
+          right: this.right
+        });
+        socket.send(coords);
         this.parent(this);
         return true;
       }
