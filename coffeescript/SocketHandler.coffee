@@ -1,7 +1,10 @@
 `define(function(){`
 
 SocketHandler = new Class
-    initialize: (@host) ->
+    Implements: [Options, Events]
+
+    initialize: (@host, options) ->
+        @setOptions options
 
         console.log 'connecting to ', @host
         @socket = new WebSocket("ws://#{@host}/ski_ws")
@@ -21,6 +24,8 @@ SocketHandler = new Class
     receive: (event) ->
         obj = JSON.decode(event.data)
         console.log 'received ', obj
+        if obj.type == 'serverTick'
+            @fireEvent 'playersMoved', [obj.locations]
 
     send: (obj) ->
         @socket.send JSON.encode(obj)

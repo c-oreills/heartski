@@ -52,9 +52,13 @@ function(require, PlayScreen, Player, CakePit, SocketHandler) {;
 
   tunnelCode = window.location.hash.substring(1);
 
-  tunnelHost = "http://" + tunnelCode + ".localtunnel.com";
+  tunnelHost = "" + tunnelCode + ".localtunnel.com";
 
-  new SocketHandler(tunnelHost);
+  new SocketHandler(tunnelHost, {
+    onPlayersMoved: function(locations) {
+      return console.log('players moved sir!', locations);
+    }
+  });
 
   });
 
