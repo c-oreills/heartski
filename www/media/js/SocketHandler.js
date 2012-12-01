@@ -5,14 +5,17 @@
 
   SocketHandler = new Class({
     initialize: function(host) {
+      var _this = this;
       this.host = host;
       console.log('connecting to ', this.host);
       this.socket = new WebSocket("ws://" + this.host + "/ski_ws");
       this.socket.onopen = function() {
-        return socket.send('New participant joined');
+        return this.send({
+          type: 'playerJoined'
+        });
       };
       this.socket.onmessage = function(e) {
-        return console.log(e.data);
+        return _this.receive(e);
       };
       this.socket.onerror = function(e) {
         return console.log('error', e.data);
@@ -22,6 +25,15 @@
       };
       window.socket = this;
       return this;
+    },
+    receive: function(event) {
+      var obj;
+      obj = JSON.decode(event.data);
+      return console.log('received ', obj);
+    },
+    send: function(obj) {
+      this.socket.send(JSON.encode(obj));
+      return console.log('sent ', obj);
     },
     playerMoved: function(player) {
       var coords;
