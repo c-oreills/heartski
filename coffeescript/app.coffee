@@ -49,7 +49,10 @@ me.loader.onload = ->
 me.loader.preload resources
 
 tunnelCode = window.location.hash.substring 1
-tunnelHost = "#{tunnelCode}.localtunnel.com"
+if tunnelCode
+    tunnelHost = "#{tunnelCode}.localtunnel.com"
+else
+    tunnelHost = document.location.host
 new SocketHandler tunnelHost,
     onPlayersMoved: (locations) ->
         console.log 'players moved sir!', locations

@@ -6,8 +6,9 @@ SocketHandler = new Class
     initialize: (@host, options) ->
         @setOptions options
 
-        console.log 'connecting to ', @host
-        @socket = new WebSocket("ws://#{@host}/ski_ws")
+        tunnelURL = "ws://#{@host}/ski_ws"
+        console.log 'connecting to ', tunnelURL
+        @socket = new WebSocket(tunnelURL)
         @socket.onopen = ->
             @send type: 'playerJoined'
         @socket.onmessage = (e) =>

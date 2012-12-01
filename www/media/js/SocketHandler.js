@@ -6,11 +6,13 @@
   SocketHandler = new Class({
     Implements: [Options, Events],
     initialize: function(host, options) {
-      var _this = this;
+      var tunnelURL,
+        _this = this;
       this.host = host;
       this.setOptions(options);
-      console.log('connecting to ', this.host);
-      this.socket = new WebSocket("ws://" + this.host + "/ski_ws");
+      tunnelURL = "ws://" + this.host + "/ski_ws";
+      console.log('connecting to ', tunnelURL);
+      this.socket = new WebSocket(tunnelURL);
       this.socket.onopen = function() {
         return this.send({
           type: 'playerJoined'
