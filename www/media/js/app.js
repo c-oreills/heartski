@@ -1,6 +1,6 @@
 (function() {
-  define(['require', './PlayScreen', 'domReady!'],
-function(require, PlayScreen) {;
+  define(['require', './PlayScreen', './Player', 'domReady!'],
+function(require, PlayScreen, Player) {;
 
   var resources;
 
@@ -33,7 +33,8 @@ function(require, PlayScreen) {;
     console.log('loaded sir');
     screen = new PlayScreen();
     me.state.set(me.state.PLAY, screen);
-    return me.state.change(me.state.PLAY);
+    me.state.change(me.state.PLAY);
+    return me.entityPool.add("mainPlayer", PlayerEntity);
   };
 
   me.loader.preload(resources);

@@ -1,5 +1,5 @@
-`define(['require', './PlayScreen', 'domReady!'],
-function(require, PlayScreen) {`
+`define(['require', './PlayScreen', './Player', 'domReady!'],
+function(require, PlayScreen, Player) {`
 
 resources = [
     name: "area01_level_tiles",
@@ -28,6 +28,8 @@ me.loader.onload = ->
     screen = new PlayScreen()
     me.state.set me.state.PLAY, screen
     me.state.change me.state.PLAY
+
+    me.entityPool.add "mainPlayer", PlayerEntity
 
 me.loader.preload resources
 
