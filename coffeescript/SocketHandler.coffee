@@ -6,9 +6,9 @@ SocketHandler = new Class
         console.log 'connecting to ', @host
         @socket = new WebSocket("ws://#{@host}/ski_ws")
         @socket.onopen = ->
-            socket.send 'New participant joined'
-        @socket.onmessage = (e)->
-            console.log e.data
+            @send type: 'playerJoined'
+        @socket.onmessage = (e) =>
+            @receive(e)
         @socket.onerror = (e)->
             console.log 'error', e.data
         @socket.onclose = (e)->
@@ -18,6 +18,14 @@ SocketHandler = new Class
 
         this
 
+    receive: (event) ->
+        obj = JSON.decode(event.data)
+        console.log 'received ', obj
+
+    send: (obj) ->
+        @socket.send JSON.encode(obj)
+        console.log 'sent ', obj
+
     playerMoved: (player) ->
         coords = JSON.encode {
             type: 'playerPosition'
@@ -26,8 +34,7 @@ SocketHandler = new Class
             bottom: player.bottom
             right: player.right
         }
-        console.log 'move ', coords
-        @socket.send coords
+        @send coords
 
 return SocketHandler
 `})`
