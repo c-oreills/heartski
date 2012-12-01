@@ -2,7 +2,7 @@
   define(['require', './PlayScreen', './Player', 'domReady!'],
 function(require, PlayScreen, Player) {;
 
-  var resources;
+  var resources, socket;
 
   resources = [
     {
@@ -23,6 +23,10 @@ function(require, PlayScreen, Player) {;
       src: "media/map.tmx"
     }
   ];
+
+  socket = new WebSocket("ws:///ski_ws");
+
+  socket.send('christy is lame');
 
   me.video.init('appSpace', 640, 480, false, 1.0);
 
