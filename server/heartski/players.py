@@ -18,6 +18,9 @@ class Player(object):
         elif isinstance(m, dict):
             self.ws.send(json.dumps(m))
 
+    def error(self, err, **kwargs):
+        self.send(dict(error=err, **kwargs))
+
     @classmethod
     def send_all(cls, data):
         for p in cls._players:
