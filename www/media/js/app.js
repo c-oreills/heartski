@@ -33,8 +33,10 @@ function(require, PlayScreen, Player) {;
     console.log('loaded sir');
     screen = new PlayScreen();
     me.state.set(me.state.PLAY, screen);
-    me.state.change(me.state.PLAY);
-    return me.entityPool.add("mainPlayer", PlayerEntity);
+    me.entityPool.add("mainPlayer", Player);
+    me.input.bindKey(me.input.KEY.LEFT, "left");
+    me.input.bindKey(me.input.KEY.RIGHT, "right");
+    return me.state.change(me.state.PLAY);
   };
 
   me.loader.preload(resources);
