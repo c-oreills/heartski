@@ -21,7 +21,7 @@ def route_typed_message(player, m):
     type_ = m['type']
     message_fn = typed_message_fns.get(type_)
     if not message_fn:
-        player.send({'error' 'No such message type: %s' % type_})
+        player.error('No such message type: %s' % type)
         return
     message_fn(player, m)
 
@@ -35,11 +35,11 @@ def ski_ws_handler(ws):
                 try:
                     m = json.loads(m)
                 except ValueError:
-                    print 'Not valid JSON:', m
+                    err = 'Not valid JSON: %s' % m
+                    print err
+                    player.error(err)
                 if isinstance(m, dict) and 'type' in m:
                     route_typed_message(player, m)
-                else:
-                    Player.send_all({'gehan_state': 'bellend', 'received': m})
     finally:
         if player:
             Player._cleanup(player)
