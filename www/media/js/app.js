@@ -40,10 +40,9 @@ function(require, PlayScreen, Player, CakePit) {;
   me.loader.onload = function() {
     var screen;
     console.log('loaded sir');
-    screen = new PlayScreen();
+    screen = new PlayScreen(true);
     me.state.set(me.state.PLAY, screen);
     me.entityPool.add("mainPlayer", Player);
-    me.entityPool.add("cakePit", CakePit);
     me.input.bindKey(me.input.KEY.LEFT, "left");
     me.input.bindKey(me.input.KEY.RIGHT, "right");
     return me.state.change(me.state.PLAY);
